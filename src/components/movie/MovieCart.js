@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-//https://api.themoviedb.org/3/movie/{movie_id}?api_key=<<api_key>>
+import Button from "../Button/Button";
 const MovieCart = ({ title, release_date, vote_average, poster_path, id }) => {
   const navigate = useNavigate();
   return (
@@ -17,12 +17,7 @@ const MovieCart = ({ title, release_date, vote_average, poster_path, id }) => {
           <span>{vote_average}</span>
         </div>
       </div>
-      <button
-        onClick={() => navigate(`/movie/${id}`)}
-        className="w-full py-3 text-sm font-semibold text-white rounded-lg bg-primary"
-      >
-        Watch Now
-      </button>
+      <Button onClick={() => navigate(`/movie/${id}`)}>Watch Now</Button>
     </div>
   );
 };

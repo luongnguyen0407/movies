@@ -1,13 +1,12 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import useSWR from "swr";
-import { fetcher } from "../../config";
+import { fetcher, tdmbApi } from "../../config";
+import Button from "../Button/Button";
 
 const Banner = () => {
-  const { data } = useSWR(
-    `https://api.themoviedb.org/3/movie/upcoming?api_key=e05d4571d77fadcce4caaa76464df83b`,
-    fetcher
-  );
+  const { data } = useSWR(tdmbApi.getMoviesTypes("upcoming"), fetcher);
   const imgBanner = data?.results || [];
   return (
     <section className="banner page-container bg-white rounded-lg overflow-hidden h-[500px] mb-20">
@@ -25,13 +24,20 @@ const Banner = () => {
   );
 };
 
-function BannerItem({ title, backdrop_path, original_language, release_date }) {
+function BannerItem({
+  title,
+  backdrop_path,
+  original_language,
+  release_date,
+  id,
+}) {
+  const navigate = useNavigate();
   return (
     <div className="relative w-full h-full select-none">
       <div className="overlay inset-0 absolute bg-gradient-to-t from-[rgba(0,0,0,0.5)] to-[rgba(0,0,0,0.5)]"></div>
       <img
         className="object-cover"
-        src={`https://image.tmdb.org/t/p/original${backdrop_path}`}
+        src={tdmbApi.imgOriginal(backdrop_path)}
         alt=""
       />
       <div className="absolute text-white bottom-5 left-5">
@@ -47,9 +53,7 @@ function BannerItem({ title, backdrop_path, original_language, release_date }) {
             {release_date}
           </span>
         </div>
-        <button className="px-5 py-3 font-semibold rounded-lg bg-primary">
-          Watch Now
-        </button>
+        <Button onClick={() => navigate(`/movie/${id}`)}>Watch Now</Button>
       </div>
     </div>
   );
